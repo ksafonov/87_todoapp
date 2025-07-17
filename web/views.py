@@ -5,12 +5,15 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib import messages
 from django.utils import timezone
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+
 
 from .models import TodoItem
 from .forms import TodoItemForm
 
 app = FastAPI()
 
+@csrf_exempt
 def todo_list(request: HttpRequest) -> HttpResponse:
     """
     Display all todo items on the main page and handle new todo creation.
@@ -45,7 +48,7 @@ def todo_list(request: HttpRequest) -> HttpResponse:
     
     return render(request, 'web/todo_list.html', context)
 
-
+@csrf_exempt
 @require_POST
 def mark_todo_done(request: HttpRequest, todo_id: int) -> JsonResponse:
     """
@@ -83,7 +86,7 @@ def mark_todo_done(request: HttpRequest, todo_id: int) -> JsonResponse:
             'error': str(e)
         }, status=400)
 
-
+@csrf_exempt
 @require_POST
 def delete_todo(request: HttpRequest, todo_id: int) -> JsonResponse:
     """
