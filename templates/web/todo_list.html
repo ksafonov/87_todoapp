@@ -1,0 +1,374 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Todo List - Todoapp{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">My Todo List</h2>
+        <p class="text-gray-600">Manage your tasks and stay organized</p>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% elif message.tags == 'error' %}bg-red-50 border border-red-200 text-red-800{% else %}bg-blue-50 border border-blue-200 text-blue-800{% endif %} px-4 py-3 rounded-md mb-3">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            {% if message.tags == 'success' %}
+                                <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            {% elif message.tags == 'error' %}
+                                <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
+                            {% else %}
+                                <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                </svg>
+                            {% endif %}
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium">{{ message }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Add New Todo Form -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+        <div class="p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Todo</h3>
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                
+                <div>
+                    <label for="{{ form.content.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.content.label }}
+                    </label>
+                    {{ form.content }}
+                    {% if form.content.errors %}
+                        <div class="mt-1">
+                            {% for error in form.content.errors %}
+                                <p class="text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="flex justify-end">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Add Todo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Todo Items Container -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        {% if todos %}
+            <div class="divide-y divide-gray-200">
+                {% for todo in todos %}
+                <div id="todo-{{ todo.id }}" class="p-6 hover:bg-gray-50 transition-colors duration-150">
+                    <div class="flex items-start justify-between">
+                        <!-- Todo Content -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center space-x-3">
+                                <!-- Interactive Status Checkbox -->
+                                <div class="flex-shrink-0">
+                                    <button type="button" 
+                                            class="todo-checkbox w-5 h-5 rounded-full border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 {% if todo.is_done %}bg-green-500 border-green-500{% else %}border-gray-300 hover:border-gray-400{% endif %}"
+                                            data-todo-id="{{ todo.id }}"
+                                            data-is-done="{{ todo.is_done|yesno:'true,false' }}"
+                                            title="{% if todo.is_done %}Mark as pending{% else %}Mark as done{% endif %}">
+                                        {% if todo.is_done %}
+                                            <svg class="w-3 h-3 text-white mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        {% endif %}
+                                    </button>
+                                </div>
+                                
+                                <!-- Todo Text -->
+                                <div class="flex-1">
+                                    <p id="todo-text-{{ todo.id }}" class="text-gray-900 {% if todo.is_done %}line-through text-gray-500{% endif %}">
+                                        {{ todo.content }}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Timestamps -->
+                            <div class="mt-2 flex items-center space-x-4 text-sm text-gray-500">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Created: {{ todo.created_at|date:"M d, Y g:i A" }}
+                                </span>
+                                
+                                <span id="completion-timestamp-{{ todo.id }}" class="{% if not todo.is_done or not todo.marked_as_done_at %}hidden{% endif %} flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="completion-text">Completed: {% if todo.marked_as_done_at %}{{ todo.marked_as_done_at|date:"M d, Y g:i A" }}{% endif %}</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="flex-shrink-0 ml-4 flex items-center space-x-3">
+                            <!-- Status Badge -->
+                            <span id="status-badge-{{ todo.id }}" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if todo.is_done %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                <span class="status-text">{% if todo.is_done %}Completed{% else %}Pending{% endif %}</span>
+                            </span>
+                            
+                            <!-- Delete Button -->
+                            <button type="button" 
+                                    class="delete-todo-btn inline-flex items-center p-1.5 border border-transparent rounded-full text-red-400 hover:text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200"
+                                    data-todo-id="{{ todo.id }}"
+                                    data-todo-content="{{ todo.content|truncatechars:50 }}"
+                                    title="Delete todo item">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Empty State -->
+            <div class="p-12 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                </svg>
+                <h3 class="mt-4 text-lg font-medium text-gray-900">No todos yet</h3>
+                <p class="mt-2 text-gray-500">Use the form above to add your first todo item and get started!</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Summary Stats -->
+    {% if todos %}
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-500">Total Tasks</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ total_count }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-500">Completed</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ completed_count }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-500">Pending</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ pending_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle todo checkbox clicks
+    document.querySelectorAll('.todo-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('click', function() {
+            const todoId = this.dataset.todoId;
+            const isDone = this.dataset.isDone === 'true';
+            
+            // Disable the checkbox during request
+            this.disabled = true;
+            this.style.opacity = '0.6';
+            
+            // Make AJAX request
+            fetch(`/todo/${todoId}/mark-done/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update checkbox appearance
+                    const checkbox = document.querySelector(`[data-todo-id="${todoId}"]`);
+                    const todoText = document.getElementById(`todo-text-${todoId}`);
+                    const statusBadge = document.getElementById(`status-badge-${todoId}`);
+                    const completionTimestamp = document.getElementById(`completion-timestamp-${todoId}`);
+                    
+                    if (data.is_done) {
+                        // Mark as done
+                        checkbox.classList.remove('border-gray-300', 'hover:border-gray-400');
+                        checkbox.classList.add('bg-green-500', 'border-green-500');
+                        checkbox.innerHTML = '<svg class="w-3 h-3 text-white mx-auto" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>';
+                        checkbox.title = 'Mark as pending';
+                        
+                        // Update text styling
+                        todoText.classList.add('line-through', 'text-gray-500');
+                        todoText.classList.remove('text-gray-900');
+                        
+                        // Update status badge
+                        statusBadge.classList.remove('bg-yellow-100', 'text-yellow-800');
+                        statusBadge.classList.add('bg-green-100', 'text-green-800');
+                        statusBadge.querySelector('.status-text').textContent = 'Completed';
+                        
+                        // Show completion timestamp
+                        if (data.marked_as_done_at) {
+                            completionTimestamp.querySelector('.completion-text').textContent = `Completed: ${data.marked_as_done_at}`;
+                            completionTimestamp.classList.remove('hidden');
+                        }
+                    } else {
+                        // Mark as pending
+                        checkbox.classList.remove('bg-green-500', 'border-green-500');
+                        checkbox.classList.add('border-gray-300', 'hover:border-gray-400');
+                        checkbox.innerHTML = '';
+                        checkbox.title = 'Mark as done';
+                        
+                        // Update text styling
+                        todoText.classList.remove('line-through', 'text-gray-500');
+                        todoText.classList.add('text-gray-900');
+                        
+                        // Update status badge
+                        statusBadge.classList.remove('bg-green-100', 'text-green-800');
+                        statusBadge.classList.add('bg-yellow-100', 'text-yellow-800');
+                        statusBadge.querySelector('.status-text').textContent = 'Pending';
+                        
+                        // Hide completion timestamp
+                        completionTimestamp.classList.add('hidden');
+                    }
+                    
+                    // Update data attribute
+                    checkbox.dataset.isDone = data.is_done.toString();
+                    
+                    // Show success message (optional - you can implement a toast notification)
+                    console.log(data.message);
+                    
+                } else {
+                    console.error('Error:', data.error);
+                    alert('Failed to update todo status. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to update todo status. Please try again.');
+            })
+            .finally(() => {
+                // Re-enable the checkbox
+                this.disabled = false;
+                this.style.opacity = '1';
+            });
+        });
+    });
+    
+    // Handle delete button clicks
+    document.querySelectorAll('.delete-todo-btn').forEach(function(deleteBtn) {
+        deleteBtn.addEventListener('click', function() {
+            const todoId = this.dataset.todoId;
+            const todoContent = this.dataset.todoContent;
+            
+            // Show confirmation dialog
+            if (confirm(`Are you sure you want to delete this todo item?\n\n"${todoContent}"\n\nThis action cannot be undone.`)) {
+                // Disable the button during request
+                this.disabled = true;
+                this.style.opacity = '0.6';
+                
+                // Make AJAX request to delete
+                fetch(`/todo/${todoId}/delete/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove the todo item from the DOM with animation
+                        const todoElement = document.getElementById(`todo-${todoId}`);
+                        todoElement.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+                        todoElement.style.opacity = '0';
+                        todoElement.style.transform = 'translateX(-100%)';
+                        
+                        // Remove element after animation
+                        setTimeout(() => {
+                            todoElement.remove();
+                            
+                            // Check if there are any todos left
+                            const remainingTodos = document.querySelectorAll('[id^="todo-"]');
+                            if (remainingTodos.length === 0) {
+                                // Reload page to show empty state and update stats
+                                window.location.reload();
+                            }
+                        }, 300);
+                        
+                        // Show success message (you can implement a toast notification)
+                        console.log(data.message);
+                        
+                    } else {
+                        console.error('Error:', data.error);
+                        alert('Failed to delete todo item. Please try again.');
+                        
+                        // Re-enable the button
+                        this.disabled = false;
+                        this.style.opacity = '1';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to delete todo item. Please try again.');
+                    
+                    // Re-enable the button
+                    this.disabled = false;
+                    this.style.opacity = '1';
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

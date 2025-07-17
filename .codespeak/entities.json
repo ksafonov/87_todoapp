@@ -1,0 +1,23 @@
+[
+    {
+        "fields": [
+            {
+                "name": "content",
+                "type": "TextField()"
+            },
+            {
+                "name": "created_at",
+                "type": "DateTimeField(auto_now_add=True)"
+            },
+            {
+                "name": "marked_as_done_at",
+                "type": "DateTimeField(null=True, blank=True)"
+            },
+            {
+                "name": "is_done",
+                "type": "BooleanField(default=False)"
+            }
+        ],
+        "name": "TodoItem"
+    }
+]

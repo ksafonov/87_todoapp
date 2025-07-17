@@ -1,0 +1,234 @@
+{
+    "phases_state": {
+        "project_name": "87_todoapp",
+        "project_path": "/Users/ks/projects/open-codespeak/test_outputs/87_todoapp",
+        "spec_file": "spec/main.cs.md",
+        "spec": "spec.processed.md",
+        "entities": "entities.json",
+        "data_model_test_path": "web/test_models.py",
+        "stories": "stories.txt",
+        "facts": "facts.txt",
+        "layouts": [
+            {
+                "description": "Main layout for the Todo application. Contains the basic HTML structure, header, main content area, and footer. All todo functionality (viewing the list, adding new items, marking items as done, and deleting items) will be implemented within this single layout.",
+                "name": "base",
+                "style": "Clean, minimalist design using Tailwind CSS with responsive layout that works well on both desktop and mobile devices."
+            }
+        ],
+        "work": "work.txt"
+    },
+    "meta": {
+        "schema": {
+            "spec": {
+                "type": "file",
+                "relative_path": "spec.processed.md",
+                "format": "text",
+                "by_phase": "ProcessSpec"
+            },
+            "entities": {
+                "type": "file",
+                "relative_path": "entities.json",
+                "format": "json",
+                "by_phase": "ExtractEntities"
+            },
+            "stories": {
+                "type": "file",
+                "relative_path": "stories.txt",
+                "format": "text",
+                "by_phase": "PlanScreens"
+            },
+            "facts": {
+                "type": "file",
+                "relative_path": "facts.txt",
+                "format": "text",
+                "by_phase": "ExtractFacts"
+            },
+            "work": {
+                "type": "file",
+                "relative_path": "work.txt",
+                "format": "text",
+                "by_phase": "PlanWork"
+            },
+            "sha_to_checkpoint": {
+                "type": "file",
+                "relative_path": "sha_to_checkpoint.json",
+                "format": "json"
+            }
+        },
+        "version": "0.1.0"
+    },
+    "time_machine": {
+        "sha_to_checkpoint": "sha_to_checkpoint.json",
+        "current_run": {
+            "id": "7c2224a"
+        },
+        "last_run": {
+            "id": "7c2224a"
+        }
+    },
+    "phase_manager": {
+        "history": [
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "Start",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:16.242985+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "Init",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:16.289127+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "ProcessSpec",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:16.329408+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "GenerateDjangoProject",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:16.408640+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "ExtractEntities",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:16.498839+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "GenerateModels",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:16.585907+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "LintAndFix",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:17.278455+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "MakeMigrations",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:17.605049+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "Migrate",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:17.965108+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "GenerateDataModelTests",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:18.061806+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "ReconcileDataModelTests",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:19.275664+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "PlanScreens",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:19.372512+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "ExtractFacts",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:19.467921+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "ExtractLayouts",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:19.565771+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "ExecuteLayouts",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:19.663823+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "PlanWork",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:19.753755+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "ExecuteWork",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:20.237343+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "Done",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:20.299958+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "Start",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:33.634477+00:00"
+            },
+            {
+                "checkpoint": {
+                    "run_id": "7c2224a",
+                    "phase_id": "Init",
+                    "additional_id": null
+                },
+                "timestamp": "2025-07-17T06:54:33.681264+00:00"
+            }
+        ],
+        "last_successful": "Init"
+    }
+}

@@ -1,0 +1,12 @@
+# General Facts About the Project
+
+- The project is called "Todoapp".
+- It is a Django application.
+- It uses Tailwindcss for styling.
+- The application has no user authentication - all visitors can perform all actions.
+- The application manages a single TODO list accessible to all visitors.
+- Todo items have content, creation date, and completion date attributes.
+- The entire application is accessible from a single page at the root URL ("/").
+- The application follows a simple CRUD pattern for todo items (Create, Read, Update, Delete).
+- All todo management functionality (viewing, adding, marking as done, removing) is available on the main page.
+- The interface is designed to be lightweight and straightforward.

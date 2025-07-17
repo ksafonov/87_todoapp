@@ -1,0 +1,40 @@
+<group name="Todo Management">
+<story name="View todo list">
+<description>As a visitor, I am able to view all todo items in a single list</description>
+<screen name="Todo list page" urlPattern="/">
+<frame>
+<description>Displays all todo items with their content, creation date, and completion status</description>
+</frame>
+</screen>
+</story>
+
+<story name="Add new todo item">
+<description>As a visitor, I am able to add a new todo item to the list</description>
+<screen name="Todo list page" urlPattern="/">
+<frame>
+<description>Provides a form to enter new todo content and submit it</description>
+<action name="Add todo item"/>
+</frame>
+</screen>
+</story>
+
+<story name="Mark todo as done">
+<description>As a visitor, I am able to mark a todo item as completed</description>
+<screen name="Todo list page" urlPattern="/">
+<frame>
+<description>Provides a checkbox or button to mark todo items as done</description>
+<action name="Mark as done"/>
+</frame>
+</screen>
+</story>
+
+<story name="Remove todo item">
+<description>As a visitor, I am able to delete a todo item from the list</description>
+<screen name="Todo list page" urlPattern="/">
+<frame>
+<description>Provides a delete button or link to remove todo items</description>
+<action name="Delete todo item"/>
+</frame>
+</screen>
+</story>
+</group>
